@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste API WhatsApp</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, textarea { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+        button { background: #25D366; color: white; padding: 12px 24px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
+        button:hover { background: #128C7E; }
+        button:disabled { background: #ccc; cursor: not-allowed; }
+        .error { color: red; margin-top: 10px; }
+        .success { color: green; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Teste API WhatsApp</h1>
+    
+    <form id="orderForm">
+        <div class="form-group">
+            <label>Nome do Cliente:</label>
+            <input type="text" id="customerName" required value="João Silva">
+        </div>
+        
+        <div class="form-group">
+            <label>Telefone:</label>
+            <input type="tel" id="customerPhone" value="32998031099">
+        </div>
+        
+        <div class="form-group">
+            <label>Produto:</label>
+            <input type="text" id="productName" required value="Bolo de Chocolate">
+        </div>
+        
+        <div class="form-group">
+            <label>Quantidade:</label>
+            <input type="number" id="quantity" required min="1" value="2">
+        </div>
+        
+        <div class="form-group">
+            <label>Preço:</label>
+            <input type="number" id="price" required min="0" step="0.01" value="45.50">
+        </div>
+        
+        <button type="submit" id="submitBtn">Enviar Pedido</button>
+    </form>
+    
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('orderForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const btn = document.getElementById('submitBtn');
+            const result = document.getElementById('result');
+            
+            btn.disabled = true;
+            btn.textContent = 'Processando...';
+            result.innerHTML = '';
+            
+            const orderData = {
+                items: [{
+                    name: document.getElementById('productName').value,
+                    quantity: parseInt(document.getElementById('quantity').value),
+                    price: parseFloat(document.getElementById('price').value)
+                }],
+                total: parseFloat(document.getElementById('price').value) * parseInt(document.getElementById('quantity').value),
+                customer: {
+                    name: document.getElementById('customerName').value,
+                    phone: document.getElementById('customerPhone').value
+                }
+            };
+            
+            try {
+                const response = await fetch('http://localhost:3001/api/order', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(orderData)
+                });
+                
+                const resultData = await response.json();
+                
+                if (resultData.success) {
+                    result.innerHTML = `<div class="success">✅ Sucesso! <a href="${resultData.data.whatsappLink}" target="_blank">Abrir WhatsApp</a></div>`;
+                } else {
+                    result.innerHTML = `<div class="error">❌ Erro: ${resultData.message}</div>`;
+                }
+            } catch (error) {
+                result.innerHTML = `<div class="error">❌ Erro de conexão: ${error.message}</div>`;
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Enviar Pedido';
+            }
+        });
+    </script>
+</body>
+</html>

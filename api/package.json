@@ -1,0 +1,23 @@
+{
+  "name": "doceria-api",
+  "version": "1.0.0",
+  "description": "Serverless functions for Doceria Carmello",
+  "main": "index.js",
+  "dependencies": {
+    "@vercel/node": "^3.0.12",
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/express": "^4.17.21",
+    "@types/cors": "^2.8.17",
+    "typescript": "^5.3.0",
+    "ts-node": "^10.9.1"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node server.ts",
+    "start": "node dist/server.js"
+  }
+}

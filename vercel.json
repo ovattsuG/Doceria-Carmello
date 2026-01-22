@@ -1,0 +1,10 @@
+{
+  "functions": {
+    "api/*.ts": {
+      "runtime": "nodejs18.x"
+    }
+  },
+  "env": {
+    "WHATSAPP_NUMBER": "5511999999999"
+  }
+}
