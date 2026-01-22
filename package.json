@@ -1,4 +1,10 @@
 {
+  "name": "doceria-carmello",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "cd doceria && npm run build",
+    "dev": "cd doceria && npm run dev"
+  },
   "dependencies": {
     "lucide": "^0.562.0",
     "lucide-react": "^0.562.0"

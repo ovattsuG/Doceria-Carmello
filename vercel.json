@@ -5,6 +5,9 @@
     }
   },
   "env": {
-    "WHATSAPP_NUMBER": "5511999999999"
-  }
+    "WHATSAPP_NUMBER": "5532998031099"
+  },
+  "buildCommand": "npm run build",
+  "outputDirectory": "doceria/dist",
+  "installCommand": "cd doceria && npm install"
 }
