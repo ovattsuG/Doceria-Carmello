@@ -30,12 +30,23 @@ const OrderForm: React.FC<OrderFormProps> = ({ preselectedItems = [] }) => {
   }, [preselectedItems]);
 
   const handleAddProduct = (name: string, price: string) => {
-    const newItem: OrderItem = {
-      name,
-      quantity: 1,
-      price: parseFloat(price.replace('R$ ', '').replace(',', '.'))
-    };
-    setItems(prev => [...prev, newItem]);
+    // Verificar se produto já existe no carrinho
+    const existingItemIndex = items.findIndex(item => item.name === name);
+    
+    if (existingItemIndex !== -1) {
+      // Produto já existe - aumentar quantidade
+      const newItems = [...items];
+      newItems[existingItemIndex].quantity += 1;
+      setItems(newItems);
+    } else {
+      // Produto novo - adicionar ao carrinho
+      const newItem: OrderItem = {
+        name,
+        quantity: 1,
+        price: parseFloat(price.replace('R$ ', '').replace(',', '.'))
+      };
+      setItems(prev => [...prev, newItem]);
+    }
   };
 
   const removeItem = (index: number) => {
@@ -93,7 +104,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ preselectedItems = [] }) => {
       <h2 className="text-2xl font-bold mb-6 text-gray-800">Fazer Pedido</h2>
       
       {items.length === 0 && (
-        <ProductCatalog onAddToCart={handleAddProduct} />
+        <ProductCatalog onAddToCart={handleAddProduct} cartItems={items} />
       )}
 
       {items.length > 0 && (
@@ -140,7 +151,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ preselectedItems = [] }) => {
 
           <div className="border-t pt-6">
             <h3 className="text-lg font-semibold mb-4 text-gray-700">Adicionar mais produtos</h3>
-            <ProductCatalog onAddToCart={handleAddProduct} />
+            <ProductCatalog onAddToCart={handleAddProduct} cartItems={items} />
           </div>
 
           <div>
