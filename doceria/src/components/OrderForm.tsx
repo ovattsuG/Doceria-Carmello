@@ -92,10 +92,12 @@ const OrderForm: React.FC<OrderFormProps> = ({ preselectedItems = [] }) => {
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">Fazer Pedido</h2>
       
-      <ProductCatalog onAddToCart={handleAddProduct} currentItems={items.map(item => item.name)} />
+      {items.length === 0 && (
+        <ProductCatalog onAddToCart={handleAddProduct} />
+      )}
 
       {items.length > 0 && (
-        <form onSubmit={handleSubmit} className="space-y-6 mt-6">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <h3 className="text-lg font-semibold mb-4 text-gray-700">Itens do Pedido ({items.length} {items.length === 1 ? 'item' : 'itens'})</h3>
             {items.map((item, index) => (
@@ -134,6 +136,11 @@ const OrderForm: React.FC<OrderFormProps> = ({ preselectedItems = [] }) => {
               </div>
             </div>
           ))}
+          </div>
+
+          <div className="border-t pt-6">
+            <h3 className="text-lg font-semibold mb-4 text-gray-700">Adicionar mais produtos</h3>
+            <ProductCatalog onAddToCart={handleAddProduct} />
           </div>
 
           <div>
